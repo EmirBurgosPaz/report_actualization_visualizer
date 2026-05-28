@@ -29,6 +29,12 @@ C = {
     "tag_pink":  "#F472B6",
     "white" : "#FFFFFF",
     "splash_bg" : "#1F1F26",
+    "tree_bg":   "#181825",   # fondo principal de la tabla
+"tree_alt":  "#1e1e2e",   # fila alternada
+"header_bg": "#313244",   # encabezados de columna
+"select_bg": "#45475a",   # fila seleccionada
+"entry_bg":  "#313244",   # fondo del campo de búsqueda
+"fg_dim":    "#6c7086",  
 }
 
 KEYBOARD_KEYS = {
