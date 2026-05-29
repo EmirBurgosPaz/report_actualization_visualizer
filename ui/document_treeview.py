@@ -193,12 +193,34 @@ class DocumentTreeview(tk.Frame):
         return tuple(lst)
 
     def _render(self, rows: list[tuple]):
+        from datetime import datetime
+    
+        today = datetime.today().date()
+        date_col = list(COLUMNS.keys()).index("date")
+    
         self._tree.delete(*self._tree.get_children())
         for i, row in enumerate(rows):
-            tag = "even" if i % 2 == 0 else "odd"
+            is_active = row[ACTIVE_COL_INDEX] == CHECK_ON
+    
+            # Determinar si la fecha es anterior a hoy
+            try:
+                row_date = datetime.strptime(row[date_col], "%Y-%m-%d %H:%M:%S").date()
+                is_outdated = row_date < today
+            except (ValueError, TypeError):
+                is_outdated = False
+    
+            if is_active and is_outdated:
+                tag = "outdated"
+            elif i % 2 == 0:
+                tag = "even"
+            else:
+                tag = "odd"
+    
             self._tree.insert("", "end", values=row, tags=(tag,))
-        self._tree.tag_configure("even", background=C.get("tree_bg",  "#181825"))
-        self._tree.tag_configure("odd",  background=C.get("tree_alt", "#1e1e2e"))
+    
+        self._tree.tag_configure("even",     background=C.get("tree_bg",  "#181825"))
+        self._tree.tag_configure("odd",      background=C.get("tree_alt", "#1e1e2e"))
+        self._tree.tag_configure("outdated", background=C.get("outdated", "#4a1c1c"))
 
     def _sort_by(self, col: str, reverse: bool):
         idx = list(COLUMNS.keys()).index(col)

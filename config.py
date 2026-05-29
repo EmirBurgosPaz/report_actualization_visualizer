@@ -35,6 +35,7 @@ C = {
 "select_bg": "#45475a",   # fila seleccionada
 "entry_bg":  "#313244",   # fondo del campo de búsqueda
 "fg_dim":    "#6c7086",  
+"outdated": "#4a1c1c"  # rojo oscuro
 }
 
 KEYBOARD_KEYS = {
