@@ -1,3 +1,3 @@
-# Proyecto OKEANOS V0.1.2
+# Proyecto OKEANOS V0.2.0
 
 Sistema interno de revision visual de la actualizacion de reportes
