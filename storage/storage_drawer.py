@@ -60,7 +60,8 @@ class StorageDrawer:
             lista_documentos_recuperados.append(documento)
         
         return lista_documentos_recuperados
-
+    
+    @staticmethod
     def save_data(self, documentos: list[Documentos]):
         lista_diccionarios = [doc.to_dict() for doc in documentos]
 
