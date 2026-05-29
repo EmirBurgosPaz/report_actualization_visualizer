@@ -73,7 +73,12 @@ class ProjectManagerApp(tk.Tk):
 
     def _build_ui(self, documentos: list):
         AppHeader(self).pack(fill="x")
-        DocumentPanel(self, documentos).pack(fill="both", expand=True)
+        self._panel = DocumentPanel(self, documentos)
+        self._panel.pack(fill="both", expand=True)
+
+    def set_show_inactive(self, show: bool):
+        """Llamado desde AppHeader para mostrar/ocultar inactivos."""
+        self._panel.set_show_inactive(show)
 
     def _reload_documents(self):
         """Recarga los documentos y refresca el DocumentPanel."""
@@ -81,7 +86,8 @@ class ProjectManagerApp(tk.Tk):
         for widget in self.winfo_children():
             if isinstance(widget, DocumentPanel):
                 widget.destroy()
-        DocumentPanel(self, documentos).pack(fill="both", expand=True)
+        self._panel = DocumentPanel(self, documentos)
+        self._panel.pack(fill="both", expand=True)
 
     # ------------------------------------------------------------------
     # Gestión de carpetas (API pública para el header / menú)
