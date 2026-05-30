@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
+import os
+import sys 
+import re
 
 from storage.storage_drawer import StorageDrawer
 from storage.folder_registry import FolderRegistry
@@ -8,18 +11,40 @@ from ui.document_panel import DocumentPanel
 from config import C, KEYBOARD_KEYS
 
 
+from models.splash_config import SplashConfig
+from ui.splash_window import TechPlexusSplash
+
+README_FILE = "README.md"
+
+def get_current_version():
+    """Busca el número de versión dentro del README.md usando Regex."""
+    if not os.path.exists(README_FILE):
+        print(f"Error: No se encontró el archivo {README_FILE}.")
+        sys.exit(1)
+    
+    with open(README_FILE, "r", encoding="utf-8") as file:
+        content = file.read()
+        # Busca un patrón tipo 1.2.3 o v1.2.3
+        match = re.search(r'(\d+\.\d+\.\d+)', content)
+        if match:
+            return match.group(1)
+        else:
+            print("Error: No se encontró un número de versión (x.x.x) en el README.md")
+            sys.exit(1)
+
 class ProjectManagerApp(tk.Tk):
     def __init__(self):
         super().__init__()
 
         self.title("Documentos actuales")
-        self._center_window(width=1550, height=880)
         self.configure(bg=C.get("bg", "#1e1e2e"))
-        self.minsize(800, 500)
+        self._center_window(width=1550, height=880)
 
         # Ocultar mientras se construye para evitar flashes
         self.attributes("-alpha", 0)
         self.withdraw()
+
+        self.minsize(800, 500)
 
         # ── Registro persistente de carpetas ──────────────────────────
         self._registry = FolderRegistry()
@@ -32,8 +57,35 @@ class ProjectManagerApp(tk.Tk):
         # Mostrar ventana ya construida
         self.update()
         self.update_idletasks()
+
+        splash = TechPlexusSplash(
+                    parent=self,
+                    config=SplashConfig(),
+                    colors=C,  # Tu diccionario de config
+                    app_name="Gestor de reportes \n actualizados",
+                    version=get_current_version(),
+                    author="Información"
+                )
+
+        self.wait_window(splash)
+        
+        # Toplevel fantasma que tapa el flash
+        blocker = tk.Toplevel(bg=C.get("bg", "#1e1e2e"))
+        blocker.geometry(self.geometry())
+        blocker.overrideredirect(True)
+        blocker.lift()
+        blocker.update()
+
+        # Mostrar la ventana principal detrás del blocker
         self.deiconify()
+        self.update()
+        self.update_idletasks()
+
+        # Ahora sí destruir el blocker
+        blocker.destroy()
         self.attributes("-alpha", 1)
+        self.lift()
+        self.focus_force()
 
     # ------------------------------------------------------------------
     # Ventana

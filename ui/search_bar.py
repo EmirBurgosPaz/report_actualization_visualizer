@@ -46,10 +46,7 @@ class SearchBar(tk.Frame):
         self._on_change(self._var.get().strip().lower())
 
     def set_count(self, shown: int, total: int):
-        if shown == total:
-            self._count_label.config(text=f"{total} documentos")
-        else:
-            self._count_label.config(text=f"{shown} de {total} documentos")
+        self._count_label.config(text=f"{total} de {shown} documentos")
     
     def get_query(self) -> str:
         return self._var.get().strip().lower()
