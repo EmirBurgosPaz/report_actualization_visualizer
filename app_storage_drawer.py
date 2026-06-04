@@ -53,6 +53,7 @@ class ProjectManagerApp(tk.Tk):
         self._build_ui(documentos)
 
         self.bind(KEYBOARD_KEYS["escape"], lambda _: self.destroy())
+        self.bind(KEYBOARD_KEYS["refresh"],  self._reload_documents)
 
         # Mostrar ventana ya construida
         self.update()
@@ -132,7 +133,7 @@ class ProjectManagerApp(tk.Tk):
         """Llamado desde AppHeader para mostrar/ocultar inactivos."""
         self._panel.set_show_inactive(show)
 
-    def _reload_documents(self):
+    def _reload_documents(self, event = None):
         """Recarga los documentos y refresca el DocumentPanel."""
         documentos = self._load_all_documents()
         for widget in self.winfo_children():

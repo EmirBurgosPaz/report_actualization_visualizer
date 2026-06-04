@@ -43,4 +43,5 @@ KEYBOARD_KEYS = {
     "escape": "<Escape>", 
     "space": "<space>", # ignorar
     "tab" : "<KeyPress-Tab>", # Ignorar 
+    "refresh" : "<KeyPress-r>", # pestaña Tareas
 }
